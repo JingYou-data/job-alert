@@ -2,8 +2,8 @@ name: Daily Job Alert
 
 on:
   schedule:
-    - cron: '0 14 * * *'   # 每天 UTC 14:00 = Nashville 时间早上 9am (CST)
-  workflow_dispatch:         # 也可以手动点击触发，方便测试
+    - cron: '0 14 * * *'   # UTC 14:00 = 9am CST
+  workflow_dispatch:         # Manual trigger for testing
 
 jobs:
   scrape:
@@ -23,9 +23,9 @@ jobs:
 
       - name: Run job scraper
         env:
-          EMAIL_SENDER:   ${{ secrets.EMAIL_SENDER }}
-          EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
-          EMAIL_RECEIVER: ${{ secrets.EMAIL_RECEIVER }}
+          SENDGRID_API_KEY: ${{ secrets.SENDGRID_API_KEY }}
+          EMAIL_SENDER:     ${{ secrets.EMAIL_SENDER }}
+          EMAIL_RECEIVER:   ${{ secrets.EMAIL_RECEIVER }}
         run: python job_scraper.py
 
       - name: Save seen_jobs.json back to repo
